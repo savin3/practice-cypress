@@ -1,0 +1,18 @@
+{
+    "student": {
+      "login": "testerStudent",
+      "password": "Password1"
+    },
+    "admin": {
+      "login": "testerAdmin",
+      "password": "Password1"
+    },
+    "employer": {
+      "login": "testerEmployer",
+      "password": "Password1"
+    },
+    "institution": {
+      "login": "testerInstitution",
+      "password": "Password1"
+    }
+  }
