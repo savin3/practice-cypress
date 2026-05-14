@@ -32,4 +32,35 @@ describe('Регистрация', () => {
     cy.get(':nth-child(3) > .form-control--medium > .form-input--text').should('have.value', "Иванов");
     cy.get(':nth-child(3) > .button').click();
   });
+
+  it('Регистрация с существующим логином', () => {
+    cy.visit('http://dev.profteam.su/registration');
+    cy.wait(500);
+
+    cy.get(':nth-child(1) > :nth-child(1) > .form-control--medium > .form-input--text').type('testerStudent');
+    cy.get('.form-input--email', { timeout: 4000 }).type('testerStudent@test.ru');
+    cy.get(':nth-child(3) > .form-control--medium > .form-input--password', { timeout: 4000 }).type('Password1');
+    cy.get(':nth-child(4) > .form-control--medium > .form-input--password', { timeout: 4000 }).type('Password1');
+
+    cy.get(':nth-child(4) > .button').click();
+    cy.wait(500);
+
+    cy.contains('Такое значение поля логин уже существует').should('be.visible');
+  });
+
+  it('Регистрация с несовпадающими паролями, кнопка заблокирована', () => {
+    cy.visit('http://dev.profteam.su/registration');
+    cy.wait(500);
+
+    let randomizedUsername = 'testuser_' + Date.now();
+    let randomizedEmail = randomizedUsername + '@test.ru';
+
+    cy.get(':nth-child(1) > :nth-child(1) > .form-control--medium > .form-input--text').type(randomizedUsername);
+    cy.get('.form-input--email', { timeout: 4000 }).type(randomizedEmail);
+    cy.get(':nth-child(3) > .form-control--medium > .form-input--password', { timeout: 4000 }).type('Password1');
+    cy.get(':nth-child(4) > .form-control--medium > .form-input--password', { timeout: 4000 }).type('Password2');
+
+    cy.get(':nth-child(4) > .button').should('be.disabled');
+    cy.contains('Пароли не совпадают').should('be.visible');
+  });
 });
